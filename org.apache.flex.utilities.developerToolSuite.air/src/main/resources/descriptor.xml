@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<application xmlns="http://ns.adobe.com/air/application/3.1">
+
+    <!-- Adobe AIR Application Descriptor File Template.
+
+        Specifies parameters for identifying, installing, and launching AIR applications.
+        See http://www.adobe.com/go/air_1.0_application_descriptor for complete documentation.
+
+        xmlns - The Adobe AIR namespace: http://ns.adobe.com/air/application/1.0
+                The last segment of the namespace specifies the version
+                of the AIR runtime required for this application to run.
+
+        minimumPatchLevel - The minimum patch level of the AIR runtime required to run
+                the application. Optional.
+    -->
+
+    <!-- The application identifier string, unique to this application. Required. -->
+    <id>developerToolSuite</id>
+
+    <!-- Used as the filename for the application. Required. -->
+    <filename>Apache Flex SDK Developer Tool Suite</filename>
+
+    <!-- The name that is displayed in the AIR application installer. Optional. -->
+    <name>Apache Flex SDK Developer Tool Suite</name>
+
+    <!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
+    <versionNumber>1.0.0</versionNumber>
+
+    <!-- Description, displayed in the AIR application installer. Optional. -->
+    <!-- <description></description> -->
+
+    <!-- Copyright information. Optional -->
+    <!-- <copyright></copyright> -->
+
+    <!-- Settings for the application's initial window. Required. -->
+    <initialWindow>
+        <!-- The Main SWF or HTML file of the application. Required. -->
+        <!-- Note: In Flex Builder, the SWF reference is set automatically. -->
+        <content>org.apache.flex.utilities.developerToolSuite.host-swf-1.0-SNAPSHOT.swf</content>
+
+        <!-- The title of the Main window. Optional. -->
+        <!-- <title></title> -->
+
+        <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
+        <!-- <systemChrome></systemChrome> -->
+
+        <!-- Whether the window is transparent. Only applicable when systemChrome is false. Optional. Default false. -->
+        <!-- <transparent></transparent> -->
+
+        <!-- Whether the window is initially visible. Optional. Default false. -->
+        <!-- <visible></visible> -->
+
+        <!-- Whether the user can minimize the window. Optional. Default true. -->
+        <!-- <minimizable></minimizable> -->
+
+        <!-- Whether the user can maximize the window. Optional. Default true. -->
+        <!-- <maximizable></maximizable> -->
+
+        <!-- Whether the user can resize the window. Optional. Default true. -->
+        <!-- <resizable></resizable> -->
+
+        <!-- The window's initial width. Optional. -->
+        <width>800</width>
+
+        <!-- The window's initial height. Optional. -->
+        <height>600</height>
+
+        <!-- The window's initial x position. Optional. -->
+        <!-- <x></x> -->
+
+        <!-- The window's initial y position. Optional. -->
+        <!-- <y></y> -->
+
+        <!-- The window's minimum size, specified as a width/height pair, such as "400 200". Optional. -->
+        <!-- <minSize></minSize> -->
+
+        <!-- The window's initial maximum size, specified as a width/height pair, such as "1600 1200". Optional. -->
+        <!-- <maxSize></maxSize> -->
+
+        <!-- Whether or not to pan when a soft keyboard is raised or lowered (either "pan" or "none").  Optional.  Defaults "pan." -->
+        <!-- <softKeyboardBehavior></softKeyboardBehavior> -->
+        <autoOrients>false</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>false</visible>
+    </initialWindow>
+
+    <!-- We recommend omitting the supportedProfiles element, -->
+    <!-- which in turn permits your application to be deployed to all -->
+    <!-- devices supported by AIR. If you wish to restrict deployment -->
+    <!-- (i.e., to only mobile devices) then add this element and list -->
+    <!-- only the profiles which your application does support. -->
+    <!-- <supportedProfiles>desktop extendedDesktop mobileDevice extendedMobileDevice</supportedProfiles> -->
+    <supportedProfiles>extendedDesktop desktop</supportedProfiles>
+
+    <!-- The subpath of the standard default installation location to use. Optional. -->
+    <installFolder>apache/flex/utilities/developerToolSuite</installFolder>
+
+    <!-- The subpath of the Windows Start/Programs menu to use. Optional. -->
+    <programMenuFolder>Apache Flex</programMenuFolder>
+
+    <!-- The icon the system uses for the application. For at least one resolution,
+          specify the path to a PNG file included in the AIR package. Optional. -->
+    <icon>
+        <image16x16>assets/icons/16.png</image16x16>
+        <image29x29>assets/icons/29.png</image29x29>
+        <image32x32>assets/icons/32.png</image32x32>
+        <image36x36>assets/icons/36.png</image36x36>
+        <image48x48>assets/icons/48.png</image48x48>
+        <image57x57>assets/icons/57.png</image57x57>
+        <image72x72>assets/icons/72.png</image72x72>
+        <image114x114>assets/icons/114.png</image114x114>
+        <image128x128>assets/icons/128.png</image128x128>
+    </icon>
+
+    <!-- Whether the application handles the update when a user double-clicks an update version
+     of the AIR file (true), or the default AIR application installer handles the update (false).
+     Optional. Default false. -->
+    <!-- <customUpdateUI></customUpdateUI> -->
+
+    <!-- Whether the application can be launched when the user clicks a link in a web browser.
+     Optional. Default false. -->
+    <!-- <allowBrowserInvocation></allowBrowserInvocation> -->
+
+    <!-- Listing of file types for which the application can register. Optional. -->
+    <!-- <fileTypes> -->
+
+    <!-- Defines one file type. Optional. -->
+    <!-- <fileType> -->
+
+    <!-- The name that the system displays for the registered file type. Required. -->
+    <!-- <name></name> -->
+
+    <!-- The extension to register. Required. -->
+    <!-- <extension></extension> -->
+
+    <!-- The description of the file type. Optional. -->
+    <!-- <description></description> -->
+
+    <!-- The MIME type. Optional. -->
+    <!-- <contentType></contentType> -->
+
+    <!-- The icon to display for the file type. Optional. -->
+    <!-- <icon>
+                 <image16x16></image16x16>
+                 <image32x32></image32x32>
+                 <image48x48></image48x48>
+                 <image128x128></image128x128>
+             </icon> -->
+
+    <!-- </fileType> -->
+    <!-- </fileTypes> -->
+
+</application>

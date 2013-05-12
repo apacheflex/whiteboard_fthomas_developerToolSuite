@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<mx:Grid xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         xmlns:mx="library://ns.adobe.com/flex/mx"
+         xmlns:parsley="http://www.spicefactory.org/parsley"
+         xmlns:component="org.apache.flex.utilities.developerToolSuite.presentation.graphic.component.*"
+         xmlns:formitem="org.apache.flex.utilities.developerToolSuite.presentation.graphic.settings.formItem.*"
+         width="100%" height="100%"
+         paddingTop="15" paddingLeft="30" paddingRight="30" verticalGap="12">
+
+
+    <fx:Declarations>
+        <parsley:Configure/>
+    </fx:Declarations>
+
+    <mx:GridRow width="100%" horizontalAlign="center">
+        <mx:GridItem>
+            <component:Frame label="{resourceManager.getString('SettingsWindow', 'LANGUAGE')}" skinClass="{FrameSkin}" width="100%">
+                <component:layout>
+                    <s:HorizontalLayout horizontalAlign="center"
+                                        verticalAlign="middle" paddingLeft="30" paddingRight="30" paddingTop="30" paddingBottom="30"
+                                        gap="16"/>
+                </component:layout>
+                <s:DropDownList id="languageComboBox"
+                                change="languageComboBox_changeHandler(event)" width="100%"/>
+            </component:Frame>
+        </mx:GridItem>
+        <mx:GridItem rowSpan="4">
+            <component:Frame label="{resourceManager.getString('SettingsWindow', 'TOOLS_PATH_LOCATION')}" skinClass="{FrameSkin}">
+                <component:layout>
+                    <s:VerticalLayout horizontalAlign="center" paddingRight="40"/>
+                </component:layout>
+                <s:Form styleName="stackedForm">
+                    <s:layout>
+                        <s:FormLayout gap="-14"/>
+                    </s:layout>
+                    <formitem:JavaHomeFormItem id="javaHomeFormItem" installationPathValidated="{model.javaEnabled}"
+                                               propertyValue="{model.JAVA_HOME ? model.JAVA_HOME : model.environmentVariables['JAVA_HOME']}"/>
+                    <formitem:AntHomeFormItem id="antHomeFormItem" installationPathValidated="{model.antEnabled}"
+                                              propertyValue="{model.ANT_HOME ? model.ANT_HOME : model.environmentVariables['ANT_HOME']}"/>
+                    <formitem:MavenHomeFormItem id="mavenHomeFormItem" installationPathValidated="{model.mavenEnabled}"
+                                                propertyValue="{model.MAVEN_HOME ? model.MAVEN_HOME : model.environmentVariables['MAVEN_HOME']}"/>
+                    <formitem:CygwinHomeFormItem id="cygwinHomeFormItem" installationPathValidated="{model.cygwinEnabled}"
+                                                 propertyValue="{model.CYGWIN_HOME}"/>
+                </s:Form>
+            </component:Frame>
+        </mx:GridItem>
+    </mx:GridRow>
+
+    <mx:GridRow width="100%" horizontalAlign="center">
+        <mx:GridItem rowSpan="3">
+            <component:Frame label="{resourceManager.getString('SettingsWindow', 'VCS')}" skinClass="{FrameSkin}" height="100%">
+                <component:layout>
+                    <s:HorizontalLayout horizontalAlign="center"
+                                        verticalAlign="middle" paddingLeft="0" paddingRight="15" paddingTop="0" paddingBottom="0"
+                                        gap="16"/>
+                </component:layout>
+                <s:Form styleName="stackedForm">
+                    <s:Label text="{resourceManager.getString('SettingsWindow', 'VCS_INTRO')}"/>
+                    <formitem:SvnHomeFormItem id="svnHomeFormItem" installationPathValidated="{model.svnEnabled}"/>
+                    <formitem:GitHomeFormItem id="gitHomeFormItem" installationPathValidated="{model.gitEnabled}"/>
+                </s:Form>
+            </component:Frame>
+        </mx:GridItem>
+    </mx:GridRow>
+
+    <mx:GridRow/>
+    <mx:GridRow/>
+
+    <fx:Script><![CDATA[
+        import org.apache.flex.utilities.developerToolSuite.executor.domain.ISettingsModel;
+        import org.apache.flex.utilities.developerToolSuite.executor.infrastructure.message.ChangeLanguageMessage;
+        import org.apache.flex.utilities.developerToolSuite.presentation.graphic.component.FrameSkin;
+
+        import spark.events.IndexChangeEvent;
+
+        [MessageDispatcher]
+        public var dispatch:Function;
+
+        [Inject]
+        [Bindable]
+        public var model:ISettingsModel;
+
+        [Init]
+        public function init():void {
+            languageComboBox.dataProvider = model.availableLanguages;
+            languageComboBox.selectedItem = model.currentLanguage;
+
+            cygwinHomeFormItem.dispatch = svnHomeFormItem.dispatch = gitHomeFormItem.dispatch = javaHomeFormItem.dispatch = antHomeFormItem.dispatch
+                    = mavenHomeFormItem.dispatch = dispatch;
+        }
+
+        private function languageComboBox_changeHandler(event:IndexChangeEvent):void {
+            dispatch(new ChangeLanguageMessage(languageComboBox.selectedItem.data));
+        }
+        ]]></fx:Script>
+</mx:Grid>

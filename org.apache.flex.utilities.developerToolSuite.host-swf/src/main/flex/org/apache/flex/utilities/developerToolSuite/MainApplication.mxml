@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+                       xmlns:s="library://ns.adobe.com/flex/spark"
+                       xmlns:parsley="http://www.spicefactory.org/parsley"
+                       xmlns:behavior="org.apache.flex.utilities.developerToolSuite.presentation.behavior.setting.*"
+                       xmlns:mx="library://ns.adobe.com/flex/mx"
+                       title="Apache Flex Developer Tool Suite"
+                       width="800" height="550"
+                       displayStateChange="displayStateChangeHandler(event)"
+                       closing="closingHandler(event)">
+
+    <fx:Declarations>
+
+        <parsley:ContextBuilder>
+            <parsley:ViewSettings autowireComponents="true"/>
+            <parsley:FlexConfig type="{ApplicationContext}"/>
+            <parsley:FlexConfig type="{UIContext}"/>
+            <parsley:FlexConfig type="{ExecutorContext}"/>
+        </parsley:ContextBuilder>
+        <parsley:Configure/>
+
+        <parsley:PopUp open="{applicationSettings.validationInProgress.isStarted}" center="true" modal="true">
+            <parsley:behaviors>
+                <behavior:KeepCenteredBehavior/>
+            </parsley:behaviors>
+            <mx:ProgressBar id="progressBar" mode="event" source="{applicationSettings.validationInProgress}"
+                            textAlign="center" labelPlacement="center" width="350"
+                            progress="progressBar_progressHandler(event)"/>
+        </parsley:PopUp>
+
+    </fx:Declarations>
+
+    <fx:Metadata>
+        [ResourceBundle("Application")]
+        [ResourceBundle("SettingsWindow")]
+    </fx:Metadata>
+
+    <s:layout>
+        <s:VerticalLayout/>
+    </s:layout>
+
+    <fx:Script><![CDATA[
+        import mx.controls.Alert;
+        import mx.logging.Log;
+        import mx.logging.LogEventLevel;
+        import mx.logging.targets.TraceTarget;
+        import mx.managers.PopUpManager;
+
+        import org.apache.flex.utilities.developerToolSuite.application.config.UIContext;
+        import org.apache.flex.utilities.developerToolSuite.executor.application.config.ExecutorContext;
+        import org.apache.flex.utilities.developerToolSuite.executor.application.util.LogUtil;
+        import org.apache.flex.utilities.developerToolSuite.executor.domain.ISettingsModel;
+        import org.apache.flex.utilities.developerToolSuite.executor.infrastructure.message.ApplicationReadyMessage;
+        import org.apache.flex.utilities.developerToolSuite.executor.infrastructure.message.InitApplicationMessage;
+        import org.apache.flex.utilities.developerToolSuite.infrastructure.event.SettingsWindowEvent;
+        import org.apache.flex.utilities.developerToolSuite.infrastructure.message.ApplicationExitReadyMessage;
+        import org.apache.flex.utilities.developerToolSuite.infrastructure.message.ExitApplicationMessage;
+        import org.apache.flex.utilities.developerToolSuite.presentation.graphic.menu.ApplicationMenu;
+        import org.spicefactory.parsley.core.command.ManagedCommandFactory;
+        import org.spicefactory.parsley.core.context.Context;
+
+        private const APP_DEFAULT_SIZE:Rectangle = new Rectangle(120, 120, 1200, 825);
+
+        [Inject]
+        public var context:Context;
+
+        [Inject]
+        public var launchUICommand:ManagedCommandFactory;
+
+        [Inject]
+        [Bindable]
+        public var applicationMenu:ApplicationMenu;
+
+        [Inject]
+        [Bindable]
+        public var applicationSettings:ISettingsModel;
+
+        [MessageDispatcher]
+        public var dispatch:Function;
+
+        private var _alert:Alert;
+        private var _appBounds:Rectangle;
+
+        [Init]
+        public function init():void {
+            addLogTargets();
+            LogUtil.getLogger(this).info('Application initialization');
+
+            dispatch(new InitApplicationMessage());
+
+            _alert = Alert.show(resourceManager.getString('Application', 'WELCOME_MSG'), resourceManager.getString('Application', 'WELCOME_TITLE'));
+        }
+
+        [MessageHandler]
+        public function applicationReady(msg:ApplicationReadyMessage):void {
+
+            PopUpManager.removePopUp(_alert);
+            menu = applicationMenu;
+
+            if (applicationSettings.appBounds) {
+                var bounds:Array = applicationSettings.appBounds.split(",");
+                _appBounds = nativeWindow.bounds = new Rectangle(bounds[0], bounds[1], bounds[2], bounds[3]);
+            } else {
+                _appBounds = nativeWindow.bounds = APP_DEFAULT_SIZE;
+            }
+
+            if (applicationSettings.appDisplayState) {
+                (applicationSettings.appDisplayState == NativeWindowDisplayState.MAXIMIZED) ? nativeWindow.maximize() : nativeWindow.restore();
+                if (applicationSettings.appDisplayState == NativeWindowDisplayState.NORMAL) {
+                    addMoveAndResizeListeners();
+                }
+            }
+
+            LogUtil.getLogger(this).info('Application ready');
+
+            launchUICommand.newInstance().execute();
+        }
+
+        [MessageHandler(selector='opened')]
+        public function settingsWindowOpenedHandler(event:SettingsWindowEvent):void {
+            menu = null;
+        }
+
+        [MessageHandler(selector='closed')]
+        public function settingsWindowClosedHandler(event:SettingsWindowEvent):void {
+            menu = applicationMenu;
+        }
+
+        private function progressBar_progressHandler(event:ProgressEvent):void {
+            if (applicationSettings.validationInProgress.currentStepLabel)
+                progressBar.label = resourceManager.getString('SettingsWindow', applicationSettings.validationInProgress.currentStepLabel) + " ( %1 / %2 )";
+        }
+
+        private function displayStateChangeHandler(event:NativeWindowDisplayStateEvent):void {
+            if (event.afterDisplayState == NativeWindowDisplayState.NORMAL) {
+                addMoveAndResizeListeners();
+            } else {
+                removeMoveAndResizeListeners();
+            }
+        }
+
+        private function addMoveAndResizeListeners():void {
+            nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE, moveAndResizeHandler);
+            nativeWindow.addEventListener(NativeWindowBoundsEvent.MOVE, moveAndResizeHandler);
+
+        }
+
+        private function removeMoveAndResizeListeners():void {
+            nativeWindow.removeEventListener(NativeWindowBoundsEvent.RESIZE, moveAndResizeHandler);
+            nativeWindow.removeEventListener(NativeWindowBoundsEvent.MOVE, moveAndResizeHandler);
+
+        }
+
+        private function moveAndResizeHandler(event:NativeWindowBoundsEvent):void {
+            _appBounds = event.afterBounds;
+        }
+
+        private function closingHandler(event:Event):void {
+            LogUtil.getLogger(this).info('Application Exit requested');
+            event.preventDefault();
+
+            exitApplication();
+        }
+
+        public function exitApplication():void {
+            var settingsToSave:Object = {};
+            settingsToSave.appBounds = _appBounds.x + "," + _appBounds.y + "," + _appBounds.width + "," + _appBounds.height;
+            settingsToSave.appDisplayState = nativeWindow.displayState;
+
+            dispatch(new ExitApplicationMessage(settingsToSave));
+        }
+
+        [MessageHandler]
+        public function applicationExitReady(msg:ApplicationExitReadyMessage):void {
+            LogUtil.getLogger(this).info('Application Exiting');
+            exit();
+        }
+
+        private static function addLogTargets():void {
+            var parsleyLogger:TraceTarget = new TraceTarget();
+            parsleyLogger.filters = ["org.spicefactory.*"];
+            parsleyLogger.level = LogEventLevel.ERROR;
+            parsleyLogger.includeCategory = true;
+            parsleyLogger.includeLevel = true;
+            parsleyLogger.fieldSeparator = " -> ";
+            Log.addTarget(parsleyLogger);
+
+            var devLogger:TraceTarget = new TraceTarget();
+            devLogger.filters = ["org.apache.flex.utilities.developerToolSuite.*"];
+            devLogger.level = LogEventLevel.ALL;
+            devLogger.includeCategory = true;
+            devLogger.includeLevel = true;
+            devLogger.includeTime = true;
+            devLogger.fieldSeparator = " -> ";
+            Log.addTarget(devLogger);
+        }
+        ]]></fx:Script>
+</s:WindowedApplication>
