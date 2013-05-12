@@ -16,36 +16,33 @@ If you are new to this project or would like to know more, read the
 ONE-TIME SETUP INSTRUCTIONS
 ======================================================================
 
-1- Run the Apache Flex Installer 1.0 to install the ApacheFlex SDK 4.8.0.1359417
+1- Run the last Apache Flex Installer
 
-  http://incubator.apache.org/flex/installer.html
+  http://flex.apache.org/installer.html
 
-2- Create your own mavenized ApacheFlex SDK 4.8.0.1359417 and copy it in your Maven repository
+2- Create your own mavenized ApacheFlex SDK 4.8.0.1359417 or above and copy it
+   in your Maven repository
 
-  http://incubator.apache.org/flex/utilities.html#mavenizer
+  http://flex.apache.org/download-utilities.html
 
-3- Build and install in your Maven repository FlexMojos 6.0-SNAPSHOT
+3- Build and install in your Maven repository FlexMojos 6.0-SNAPSHOT or above
 
   https://github.com/chrisdutz/flexmojos
 
-4- Checkout and build the ApacheFlex SDK 4.9.0 Develop Branch
+4- Clone this project
 
-  svn co https://svn.apache.org/repos/asf/incubator/flex/sdk/branches/develop/ flex
-
-5- Clone this project
 We'll assume you typed the following to checkout Apache Flex SDK 
 Developer Tool Suite.
 (if not, adjust the paths in the following instructions accordingly):
 
-  cd ~
-  git clone git@github.com:doublefx/AFSDTS.git
+  git clone git://github.com/apacheflex/whiteboard_fthomas_developerToolSuite.git developerToolSuite
 
-6- Import AFSDTS as Maven project in IntelliJ IDEA
+5- Import developerToolSuite as Maven project in IntelliJ IDEA
 
 Next double-check you meet the installation requirements:
 
  * A proper installation of IntelliJ IDEA 11.x or above.
- * A proper installation of Apache Flex SDK 4.8.0.1359417.
+ * A proper installation of Apache Flex SDK 4.8.0.1359417 or above.
 
 ======================================================================
 GIT POLICIES
@@ -66,10 +63,6 @@ Setup Git correctly before you do anything else:
 
   git config --global user.name "My Name"
   git config --global user.email myname@myemaildomain.com
-
-Perform the initial checkout with this:
-
-  git clone git@github.com:doublefx/AFSDTS.git
 
 Let's take the simple case where you just want to make a minor change
 against master. You don't want a new branch etc, and you only want a
@@ -117,7 +110,7 @@ This project is intended to be used by developpers who like to participate
 to the effort I started, creating Apache Flex SDK Developer Tool Suite.
 
 If you have any questions, thoughts, suggestions, please use the community support 
-mailing list at flex-dev@incubator.apache.org or my email address webdoublefx@gmail.com
+mailing list at dev@flex.apache.org or my email address webdoublefx@gmail.com
 with [DEVELOPER TOOL SUITE] in the subject.
 
 Thanks for your interest in Apache Flex SDK Developer Tool Suite !
