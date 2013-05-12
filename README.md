@@ -110,7 +110,7 @@ This project is intended to be used by developpers who like to participate
 to the effort I started, creating Apache Flex SDK Developer Tool Suite.
 
 If you have any questions, thoughts, suggestions, please use the community support 
-mailing list at dev@flex.apache.org or my email address webdoublefx@gmail.com
+mailing list at dev@flex.apache.org or my email address webdoublefx@hotmail.com
 with [DEVELOPER TOOL SUITE] in the subject.
 
 Thanks for your interest in Apache Flex SDK Developer Tool Suite !
