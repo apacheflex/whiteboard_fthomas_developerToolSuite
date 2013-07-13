@@ -26,7 +26,7 @@ limitations under the License.
     <packaging>pom</packaging>
 
     <properties>
-        <flexmojos.version>6.0-SNAPSHOT</flexmojos.version>
+        <flexmojos.version>6.0.1</flexmojos.version>
         <flex.version>4.10.0-SNAPSHOT</flex.version>
         <flex.debug>true</flex.debug>
     </properties>
