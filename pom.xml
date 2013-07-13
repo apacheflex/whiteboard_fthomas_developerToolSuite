@@ -29,6 +29,7 @@ limitations under the License.
         <flexmojos.version>6.0.1</flexmojos.version>
         <flex.version>4.10.0-SNAPSHOT</flex.version>
         <flex.debug>true</flex.debug>
+        <air.version>3.4</air.version>
     </properties>
 
     <modules>
@@ -74,7 +75,7 @@ limitations under the License.
                             <value>'${project.version}'</value>
                         </property>
                     </defines>
-                    <adlCommand>D://SDKsSources/air/3.4/bin/adl.exe</adlCommand>
+                    <adlCommand>D://SDKsSources/air/${air.version}/bin/adl.exe</adlCommand>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -86,7 +87,7 @@ limitations under the License.
                     <dependency>
                         <groupId>com.adobe.air.compiler</groupId>
                         <artifactId>adt</artifactId>
-                        <version>3.4</version>
+                        <version>${air.version}</version>
                         <type>jar</type>
                     </dependency>
                 </dependencies>
