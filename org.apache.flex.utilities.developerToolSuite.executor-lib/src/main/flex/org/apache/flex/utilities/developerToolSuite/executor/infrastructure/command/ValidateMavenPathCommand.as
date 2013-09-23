@@ -61,7 +61,7 @@ package org.apache.flex.utilities.developerToolSuite.executor.infrastructure.com
             try {
                 file = new File(shell.formatPath(_msg.path));
                 if (!file.resolvePath("bin/mvn.bat").exists) {
-                    LOG.error("Error resolving ANT_HOME");
+                    LOG.error("Error resolving MAVEN_HOME");
                     result(CommandCallBack.DEFAULT_ERROR);
                     return;
                 }
