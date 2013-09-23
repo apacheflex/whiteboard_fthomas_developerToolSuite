@@ -27,9 +27,10 @@ limitations under the License.
 
     <properties>
         <flexmojos.version>6.0.1</flexmojos.version>
-        <flex.version>4.10.0-SNAPSHOT</flex.version>
+        <flex.version>4.10.0.20130801</flex.version>
         <flex.debug>true</flex.debug>
-        <air.version>3.4</air.version>
+        <flex.skip.test>false</flex.skip.test>
+        <air.version>3.8</air.version>
     </properties>
 
     <modules>
@@ -65,6 +66,7 @@ limitations under the License.
                     <targetPlayer>11.1</targetPlayer>
                     <swfVersion>14</swfVersion>
                     <debug>${flex.debug}</debug>
+                    <skipTest>${flex.skip.test}</skipTest>
                     <defines>
                         <property>
                             <name>CONFIG::debugging</name>
@@ -75,7 +77,10 @@ limitations under the License.
                             <value>'${project.version}'</value>
                         </property>
                     </defines>
-                    <adlCommand>D://SDKsSources/air/${air.version}/bin/adl.exe</adlCommand>
+                    <adlCommand>F://SDKsSources/air/${air.version}/bin/adl.exe</adlCommand>
+                    <compilerWarnings>
+                        <warn-no-constructor>false</warn-no-constructor>
+                    </compilerWarnings>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -94,13 +99,6 @@ limitations under the License.
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>ooo-maven-repo</id>
-            <url>http://ooo-maven.googlecode.com/hg/repository</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Air SDK dependencies -->
@@ -146,6 +144,12 @@ limitations under the License.
             <artifactId>parsley-popup</artifactId>
             <version>3.0.2</version>
             <type>swc</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sourceforge.abobe.cairngorm</groupId>
+                    <artifactId>cairngorm-popup</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.abobe.cairngorm</groupId>
